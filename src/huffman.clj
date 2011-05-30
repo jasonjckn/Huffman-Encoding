@@ -3,18 +3,15 @@
         [clojure.walk]
         [pallet thread-expr]))
 
-(defnl iter [ir]
-  (->> ir (sort-by (fn [[_ f]] f)) (merge-two))
-  :where [merge-two (fn [[[av af] [bv bf] & cs]]
-                      (cons [{0 av 1 bv} (+ af bf)] cs))])
 
 (defnl decode-tree [freq]
-  (loop [ir initial-irepr]
-    (if (= (count ir) 1)
-      (first (first ir))
-      (recur (iter ir))))
+  (->> freq (iterate merge-lowest-2) (take (count freq))
+       (last) (first) (first))
   :where
-  [initial-irepr (for [[ch f] freq] [ch f])])
+  [merge-first-2 (fn [[[av af] [bv bf] & cs]]
+                   (cons [{0 av 1 bv} (+ af bf)] cs))
+
+   merge-lowest-2 (fnl [ir] (->> ir (sort-by (fn [[_ f]] f)) (merge-first-2)))])
 
 (defnl encode-map [decode-tree]
   (->> decode-tree (leaf-seq) (map reverse) (map vec) (into {})))
@@ -36,3 +33,4 @@
         (recur (conj decoded node) ds (root-node d1)))
       (conj decoded node)))
   :where [root-node (:decode-tree hf)])
+

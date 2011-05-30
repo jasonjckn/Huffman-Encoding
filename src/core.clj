@@ -1,17 +1,22 @@
 (ns core
   (:use huffman))
 
+(defn test-msg [freq msg]
+  (let [hf (huffman-compile freq)
+        data-enc (encode hf msg)
+        data-dec (decode hf data-enc)]
+    (println msg)
+    (println (apply str data-enc))
+    (println (apply str data-dec))
+    (println "Compressed Size %: " (float (/ (count data-enc) (* 8 (count msg)))))))
+
 (defn -main []
-  (def freq {\o 12 \h 1 \e 1 \l 2 })
-  (def hf (huffman-compile freq))
+  (test-msg {\o 12 \h 1 \e 1 \l 2 }
+            "helloooooooooooo")
 
-  (def msg (seq "hellooooooooooooooo"))
-  (def data-enc (encode hf "hellooooooooooooooo"))
-  (def data-dec (decode hf data-enc))
-
-  (println msg)
-  (println data-enc)
-  (println data-dec))
+  (let [msg "the great white fox jumped over the lazy dog"
+        freq (apply merge (map #(identity {% (rand-int 10)}) msg))]
+    (test-msg freq msg)))
 
 
 

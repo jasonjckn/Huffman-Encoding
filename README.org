@@ -1,0 +1,10 @@
+
+* How to run
+#+BEGIN_SRC
+lein deps
+lein run
+#+END_SRC
+
+* Screenshot
+[[https://github.com/jasonjckn/Huffman-Encoding/raw/master/pic.png]]
+

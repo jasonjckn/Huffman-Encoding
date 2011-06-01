@@ -5,10 +5,11 @@
   (let [hf (huffman-compile freq)
         data-enc (encode hf msg)
         data-dec (decode hf data-enc)]
-    (println msg)
-    (println (apply str data-enc))
-    (println (apply str data-dec))
-    (println "Compressed Size %: " (float (/ (count data-enc) (* 8 (count msg)))))))
+    (println (apply str (repeat 80 \=)))
+    (println "Input:  \t" msg)
+    (println "Encoded:\t" (apply str data-enc))
+    (println "Decoded:\t" (apply str data-dec))
+    (println "Compression %:\t" (float (/ (count data-enc) (* 8 (count msg)))))))
 
 (defn -main []
   (test-msg {\o 12 \h 1 \e 1 \l 2 }

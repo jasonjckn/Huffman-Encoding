@@ -56,5 +56,5 @@
                    [[ks coll]]))]
     (visit coll [])))
 
-#_ (leaf-seq {:a 3 :b {:c 4} :e {:f {:g 5}}})
-
+(defn repeat-invocation [n f x]
+  (nth (seq (iterate f x)) n))

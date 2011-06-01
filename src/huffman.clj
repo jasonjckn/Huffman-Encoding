@@ -5,8 +5,8 @@
 
 
 (defnl decode-tree [freq]
-  (->> freq (iterate merge-lowest-2) (take (count freq))
-       (last) (first) (first))
+  (->> (repeat-invocation (- (count freq) 1) merge-lowest-2 freq) (ffirst))
+
   :where
   [merge-first-2 (fn [[[av af] [bv bf] & cs]]
                    (cons [{0 av 1 bv} (+ af bf)] cs))
